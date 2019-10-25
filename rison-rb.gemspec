@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "rison/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "rison"
+  spec.name          = "rison-rb"
   spec.version       = Rison::VERSION
   spec.authors       = ["wata_mac"]
   spec.email         = ["watassbass@gmail.com"]
