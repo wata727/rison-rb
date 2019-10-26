@@ -1,7 +1,31 @@
+require "strscan"
+
 require "rison/version"
 require "rison/parser"
 
 module Rison
-  class Error < StandardError; end
-  # Your code goes here...
+  class ParserError < StandardError; end
+
+  class << self
+    def parse(source, options = {})
+      object = Parser.parse(source)
+      return object unless options[:symbolize_names]
+      deep_symbolize_names(object)
+    end
+  
+    private
+
+    def deep_symbolize_names(object)
+      case object
+      when Hash
+        object.each_with_object({}) do |(k, v), ret|
+          ret[k.to_sym] = deep_symbolize_names(v)
+        end
+      when Array
+        object.map { |e| deep_symbolize_names(e) }
+      else
+        object
+      end
+    end
+  end
 end

@@ -69,8 +69,6 @@ e: E        { result = 'e' }
 
 ---- inner
 
-class ParseError < Racc::ParseError; end
-
 attr_reader :source, :input
 
 def initialize(source)
@@ -81,7 +79,7 @@ end
 def self.parse(source)
   self.new(source).do_parse
 rescue Racc::ParseError => exn
-  raise ParseError.new(exn.message)
+  raise ParserError.new("#{exn.message} in #{source}")
 end
 
 def next_token

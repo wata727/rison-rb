@@ -67,8 +67,8 @@ RSpec.describe Rison::Parser do
     '!',
     %('!'),
   ].each do |source|
-    it "#{source} => ParseError" do
-      expect { described_class.parse(source) }.to raise_error(Rison::Parser::ParseError)
+    it "#{source} => ParserError" do
+      expect { described_class.parse(source) }.to raise_error(Rison::ParserError)
     end
   end
 end
