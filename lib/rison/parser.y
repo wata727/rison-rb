@@ -27,9 +27,9 @@ id: idstart
 idchars: idchar
        | idchar idchars  { result = val[0] + val[1] }
 
-idchar: IDCHAR | idstart | MINUS | DIGIT | DIGIT19
+idchar: IDCHAR | idstart | MINUS | DIGIT
 
-idstart: IDSTART | NAPIER | DOT | NONASCIICHAR
+idstart: IDSTART | NAPIER | DOT
 
 string: QUOTE QUOTE           { result = '' }
       | QUOTE strchars QUOTE  { result = val[1] }
@@ -47,21 +47,17 @@ number: int           { result = val[0].to_i }
       | int exp       { result = "#{val[0]}#{val[1]}".to_f }
       | int frac exp  { result = "#{val[0]}#{val[1]}#{val[2]}".to_f }
 
-int : DIGIT                 { result = val[0].to_i }
-    | DIGIT19               { result = val[0].to_i }
-    | DIGIT19 digits        { result = "#{val[0]}#{val[1]}".to_i }
-    | MINUS DIGIT           { result = "-#{val[1]}".to_i }
-    | MINUS DIGIT19         { result = "-#{val[1]}".to_i }
-    | MINUS DIGIT19 digits  { result = "-#{val[1]}#{val[2]}".to_i }
+int : DIGIT               { result = val[0].to_i }
+    | DIGIT digits        { result = "#{val[0]}#{val[1]}".to_i }
+    | MINUS DIGIT         { result = "-#{val[1]}".to_i }
+    | MINUS DIGIT digits  { result = "-#{val[1]}#{val[2]}".to_i }
 
 frac: DOT digits  { result = "#{val[0]}#{val[1]}" }
 
 exp: e digits  { result = "#{val[0]}#{val[1]}" }
 
 digits: DIGIT
-      | DIGIT digits    { result = "#{val[0]}#{val[1]}" }
-      | DIGIT19
-      | DIGIT19 digits  { result = "#{val[0]}#{val[1]}" }
+      | DIGIT digits  { result = "#{val[0]}#{val[1]}" }
 
 e: NAPIER        { result = 'e' }
  | NAPIER MINUS  { result = "e-" }
@@ -111,16 +107,16 @@ def next_token
     [:MINUS, input.matched]
   when input.scan(/e/)
     [:NAPIER, input.matched]
-  when input.scan(/[1-9]/)
-    [:DIGIT19, input.matched]
+  # Originally, 0 is not allowed at the beginning of the number, but rison.js accepts this.
   when input.scan(/[0-9]/)
     [:DIGIT, input.matched]
-  when input.scan(/[a-zA-Z_\.\/~]/)
+  # IDSTART and IDCHAR should originally accept only the ASCII symbols `-_./~`, but rison.js accepts other symbols.
+  # @see https://rison.io/
+  # @see https://github.com/Nanonid/rison/blob/e64af6c096fd30950ec32cfd48526ca6ee21649d/js/rison.js#L77-L84
+  when input.scan(/[^\-0-9 '!:\(\),\*@¥\$]/)
     [:IDSTART, input.matched]
-  when input.scan(/[a-zA-Z_\.\/~\-0-9]/)
+  when input.scan(/[^ '!:\(\),\*@¥\$]/)
     [:IDCHAR, input.matched]
-  when input.scan(/[^[:ascii:]]/)
-    [:NONASCIICHAR, input.matched]
   when input.scan(/[^\'\!]/)
     [:STRCHAR, input.matched]
   end
