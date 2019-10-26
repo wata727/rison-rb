@@ -19,7 +19,12 @@ elements: value                 { result = [val[0]] }
 
 key: id | string
 
-value: id | string | number | object | array | BOOL | NULL
+value: id | string | number | object | array | bool | null
+
+bool: EXCLAM T  { result = true }
+    | EXCLAM F  { result = false }
+
+null: EXCLAM N  { result = nil }
 
 id: idstart
   | idstart idchars  { result = val[0] + val[1] }
@@ -29,7 +34,7 @@ idchars: idchar
 
 idchar: IDCHAR | idstart | MINUS | DIGIT
 
-idstart: IDSTART | NAPIER | DOT
+idstart: IDSTART | E | T | F | N | DOT
 
 string: QUOTE QUOTE           { result = '' }
       | QUOTE strchars QUOTE  { result = val[1] }
@@ -59,8 +64,8 @@ exp: e digits  { result = "#{val[0]}#{val[1]}" }
 digits: DIGIT
       | DIGIT digits  { result = "#{val[0]}#{val[1]}" }
 
-e: NAPIER        { result = 'e' }
- | NAPIER MINUS  { result = "e-" }
+e: E        { result = 'e' }
+ | E MINUS  { result = "e-" }
 
 ---- inner
 
@@ -83,12 +88,6 @@ def next_token
   case
   when input.eos?
     [false, false]
-  when input.scan(/!t\b/)
-    [:BOOL, true]
-  when input.scan(/!f\b/)
-    [:BOOL, false]
-  when input.scan(/!n\b/)
-    [:NULL, nil]
   when input.scan(/'/)
     [:QUOTE, nil]
   when input.scan(/\(/)
@@ -106,7 +105,13 @@ def next_token
   when input.scan(/\-/)
     [:MINUS, input.matched]
   when input.scan(/e/)
-    [:NAPIER, input.matched]
+    [:E, input.matched]
+  when input.scan(/t/)
+    [:T, input.matched]
+  when input.scan(/f/)
+    [:F, input.matched]
+  when input.scan(/n/)
+    [:N, input.matched]
   # Originally, 0 is not allowed at the beginning of the number, but rison.js accepts this.
   when input.scan(/[0-9]/)
     [:DIGIT, input.matched]
