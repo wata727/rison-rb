@@ -12,3 +12,5 @@
 .rspec_status
 
 /lib/rison/parser.output
+/lib/rison/object_parser.output
+/lib/rison/array_parser.output

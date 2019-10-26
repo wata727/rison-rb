@@ -9,4 +9,8 @@ rule /\.rb/ => ".y" do |t|
   sh "racc", "-v", "-o", "#{t.name}", "#{t.source}"
 end
 
-task :racc => "lib/rison/parser.rb"
+task :racc => %w(
+  lib/rison/parser.rb
+  lib/rison/object_parser.rb
+  lib/rison/array_parser.rb
+)

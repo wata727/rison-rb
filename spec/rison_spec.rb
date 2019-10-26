@@ -19,5 +19,13 @@ RSpec.describe Rison do
         b: { c: 1, d: false }, 
       })
     end
+
+    it "parses into a hash as O-Rison" do
+      expect(Rison.parse('a:1,b:2', mode: :object)).to eq({ 'a' => 1, 'b' => 2 })
+    end
+
+    it "parses into a hash as A-Rison" do
+      expect(Rison.parse('foo,bar', mode: :array)).to eq(['foo', 'bar'])
+    end
   end
 end

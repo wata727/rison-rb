@@ -2,13 +2,29 @@ require "strscan"
 
 require "rison/version"
 require "rison/parser"
+require "rison/object_parser"
+require "rison/array_parser"
 
 module Rison
   class ParserError < StandardError; end
+  class InvalidMode < StandardError; end
 
   class << self
     def parse(source, options = {})
-      object = Parser.parse(source)
+      mode = options[:mode] || :default
+
+      parser_class = case mode.to_sym
+                     when :default
+                       Parser
+                     when :object
+                       ObjectParser
+                     when :array
+                       ArrayParser
+                     else
+                       raise InvalidMode.new("Invalid mode: #{mode}")
+                     end
+
+      object = parser_class.parse(source)
       return object unless options[:symbolize_names]
       deep_symbolize_names(object)
     end
