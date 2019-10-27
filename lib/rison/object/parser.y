@@ -1,8 +1,8 @@
-class Rison::ArrayParser
+class Rison::Object::Parser
 rule
 
-target: QUOTE QUOTE  { result = [] }
-      | elements
+target: QUOTE QUOTE  { result = {} }
+      | members
 
 object: LPAREN RPAREN          { result = {} }
       | LPAREN members RPAREN  { result = val[1] }

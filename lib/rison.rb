@@ -3,8 +3,8 @@ require "strscan"
 require "rison/version"
 require "rison/parser"
 require "rison/dumper"
-require "rison/object_parser"
-require "rison/array_parser"
+require "rison/object/parser"
+require "rison/array/parser"
 
 module Rison
   class ParserError < StandardError; end
@@ -20,11 +20,11 @@ module Rison
 
       parser_class = case mode.to_sym
                      when :default
-                       Parser
+                       ::Rison::Parser
                      when :object
-                       ObjectParser
+                       ::Rison::Object::Parser
                      when :array
-                       ArrayParser
+                       ::Rison::Array::Parser
                      else
                        raise InvalidMode.new("Invalid mode: #{mode}")
                      end
@@ -42,7 +42,7 @@ module Rison
         object.each_with_object({}) do |(k, v), ret|
           ret[k.to_sym] = deep_symbolize_names(v)
         end
-      when Array
+      when ::Array
         object.map { |e| deep_symbolize_names(e) }
       else
         object

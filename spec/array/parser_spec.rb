@@ -1,4 +1,4 @@
-RSpec.describe Rison::ArrayParser do
+RSpec.describe Rison::Array::Parser do
   [
     ['foo,bar,(a:1,b:!(!t))', ['foo', 'bar', { 'a' => 1, 'b' => [true] }]],
     [%(''), []],

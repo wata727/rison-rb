@@ -11,6 +11,6 @@ end
 
 task :racc => %w(
   lib/rison/parser.rb
-  lib/rison/object_parser.rb
-  lib/rison/array_parser.rb
+  lib/rison/object/parser.rb
+  lib/rison/array/parser.rb
 )

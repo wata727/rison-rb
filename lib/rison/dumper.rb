@@ -13,7 +13,7 @@ module Rison
           object.to_s.gsub('+', '')
         when Hash
           "(#{object.map { |k, v| dump(k) + ':' + dump(v) }.join(',')})"
-        when Array
+        when ::Array
           "!(#{object.map { |e| dump(e) }.join(',')})"
         else
           escape(object.to_s)

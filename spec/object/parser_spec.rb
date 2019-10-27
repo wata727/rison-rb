@@ -1,4 +1,4 @@
-RSpec.describe Rison::ObjectParser do
+RSpec.describe Rison::Object::Parser do
   [
     ['a:1,b:(c:!t,d:!(foo,bar))', { 'a' => 1, 'b' => { 'c' => true, 'd' => ['foo', 'bar'] } }],
     [%(''), {}],
