@@ -51,7 +51,7 @@ Rison.dump(['foo', 'bar'], mode: :array) # => foo,bar
 Rison.parse('foo,bar', mode: :array) # => ['foo', 'bar']
 ```
 
-### Difference from the original syntax
+### Differences from the original syntax
 
 [The original syntax](https://rison.io) defines only alphanumeric and `-_./~` as ASCII characters for idchar. But [rison.js](https://github.com/Nanonid/rison) accepts other ASCII characters as idchar.
 
