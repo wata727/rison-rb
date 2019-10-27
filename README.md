@@ -1,4 +1,7 @@
 # rison-rb
+[![Build Status](https://github.com/wata727/rison-rb/workflows/spec/badge.svg?branch=master)](https://github.com/wata727/rison-rb/actions)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.txt)
+[![Gem Version](https://badge.fury.io/rb/rison-rb.svg)](https://badge.fury.io/rb/rison-rb)
 
 A Ruby implementation for [Rison - Compact Data in URIs](https://rison.io).
 
