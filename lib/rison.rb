@@ -1,18 +1,32 @@
 require "strscan"
 
 require "rison/version"
-require "rison/parser"
 require "rison/dumper"
+require "rison/parser"
+require "rison/object/dumper"
 require "rison/object/parser"
+require "rison/array/dumper"
 require "rison/array/parser"
 
 module Rison
+  class DumperError < StandardError; end
   class ParserError < StandardError; end
   class InvalidMode < StandardError; end
 
   class << self
-    def dump(object)
-      Dumper.dump(object)
+    def dump(object, options = {})
+      mode = options[:mode] || :default
+
+      case mode.to_sym
+      when :default
+        ::Rison::Dumper.dump(object)
+      when :object
+        ::Rison::Object::Dumper.dump_object(object)
+      when :array
+        ::Rison::Array::Dumper.dump_array(object)
+      else
+        raise InvalidMode.new("Invalid mode: #{mode}")
+      end
     end
 
     def parse(source, options = {})

@@ -17,6 +17,14 @@ RSpec.describe Rison do
         b: { c: 1, d: false }, 
       })).to eq "(a:!(foo,(e:bar),baz),b:(c:1,d:!f))"
     end
+
+    it "dumps into O-Rison from a hash" do
+      expect(Rison.dump({ 'a' => 1, 'b' => 2 }, mode: :object)).to eq 'a:1,b:2'
+    end
+
+    it "dumps into A-Rison from a hash" do
+      expect(Rison.dump(['foo', 'bar'], mode: :array)).to eq 'foo,bar' 
+    end
   end
 
   describe '.parse' do
