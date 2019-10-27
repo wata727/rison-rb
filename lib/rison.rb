@@ -2,6 +2,7 @@ require "strscan"
 
 require "rison/version"
 require "rison/parser"
+require "rison/dumper"
 require "rison/object_parser"
 require "rison/array_parser"
 
@@ -10,6 +11,10 @@ module Rison
   class InvalidMode < StandardError; end
 
   class << self
+    def dump(object)
+      Dumper.dump(object)
+    end
+
     def parse(source, options = {})
       mode = options[:mode] || :default
 

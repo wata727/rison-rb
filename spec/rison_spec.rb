@@ -3,6 +3,22 @@ RSpec.describe Rison do
     expect(Rison::VERSION).not_to be nil
   end
 
+  describe '.dump' do
+    it "dumps into Rison from a hash with string keys" do
+      expect(Rison.dump({
+        'a' => ['foo', { 'e' => 'bar' }, 'baz'],
+        'b' => { 'c' => 1, 'd' => false },
+      })).to eq "(a:!(foo,(e:bar),baz),b:(c:1,d:!f))"
+    end
+
+    it "dumps into Rison from a hash with symbol keys" do
+      expect(Rison.dump({
+        a: ['foo', { e: 'bar' }, 'baz'],
+        b: { c: 1, d: false }, 
+      })).to eq "(a:!(foo,(e:bar),baz),b:(c:1,d:!f))"
+    end
+  end
+
   describe '.parse' do
     let(:source) { "(a:!(foo,(e:bar),baz),b:(c:1,d:!f))" }
 
