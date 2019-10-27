@@ -60,7 +60,7 @@ Rison.parse('foo,bar', mode: :array) # => ['foo', 'bar']
 
 rison-rb conforms to the rison.js implementation. Therefore, it differs from the original syntax in the following points:
 
-- It accepts ASCII characters other than ` '!:(),*@$` and all non-ASCII characters as idchar.
+- It accepts ASCII characters other than `<space>'!:(),*@$` and all non-ASCII characters as idchar.
 - Numbers starting with 0 are allowed.
 
 ## Development
