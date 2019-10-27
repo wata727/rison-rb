@@ -116,9 +116,9 @@ def next_token
   # IDSTART and IDCHAR should originally accept only the ASCII symbols `-_./~`, but rison.js accepts other symbols.
   # @see https://rison.io/
   # @see https://github.com/Nanonid/rison/blob/e64af6c096fd30950ec32cfd48526ca6ee21649d/js/rison.js#L77-L84
-  when input.scan(/[^\-0-9 '!:\(\),\*@¥\$]/)
+  when input.scan(/[^\-0-9 '!:\(\),\*@\$]/)
     [:IDSTART, input.matched]
-  when input.scan(/[^ '!:\(\),\*@¥\$]/)
+  when input.scan(/[^ '!:\(\),\*@\$]/)
     [:IDCHAR, input.matched]
   when input.scan(/[^\'\!]/)
     [:STRCHAR, input.matched]
