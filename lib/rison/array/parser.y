@@ -47,6 +47,10 @@ strchar: STRCHAR
        | idchar
        | EXCLAM EXCLAM  { result = '!' }
        | EXCLAM QUOTE   { result = "'" }
+       | COLON
+       | LPAREN
+       | RPAREN
+       | COMMA
 
 number: int           { result = val[0].to_i }
       | int frac      { result = "#{val[0]}#{val[1]}".to_f }
@@ -88,11 +92,11 @@ def next_token
   when input.eos?
     [false, false]
   when input.scan(/'/)
-    [:QUOTE, nil]
+    [:QUOTE, input.matched]
   when input.scan(/\(/)
-    [:LPAREN, nil]
+    [:LPAREN, input.matched]
   when input.scan(/\)/)
-    [:RPAREN, nil]
+    [:RPAREN, input.matched]
   when input.scan(/:/)
     [:COLON, input.matched]
   when input.scan(/\./)

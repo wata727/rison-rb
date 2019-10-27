@@ -9,7 +9,7 @@ module Rison
   module Object
     class Parser < Racc::Parser
 
-module_eval(<<'...end parser.y/module_eval...', 'parser.y', 72)
+module_eval(<<'...end parser.y/module_eval...', 'parser.y', 76)
 
 attr_reader :source, :input
 
@@ -29,11 +29,11 @@ def next_token
   when input.eos?
     [false, false]
   when input.scan(/'/)
-    [:QUOTE, nil]
+    [:QUOTE, input.matched]
   when input.scan(/\(/)
-    [:LPAREN, nil]
+    [:LPAREN, input.matched]
   when input.scan(/\)/)
-    [:RPAREN, nil]
+    [:RPAREN, input.matched]
   when input.scan(/:/)
     [:COLON, input.matched]
   when input.scan(/\./)
@@ -70,82 +70,86 @@ end
 ##### State transition tables begin ###
 
 racc_action_table = [
-    16,    62,    60,    65,    66,    25,    11,    12,    13,    17,
-    19,    20,     9,    10,    14,    23,    51,    77,    62,    64,
-    64,    25,    11,    12,    13,    17,    19,    20,     9,    10,
-    14,    23,    36,    37,    73,    26,    27,    39,    11,    12,
-    13,    36,    49,    48,     9,    10,    14,    11,    12,    13,
-    30,    36,    37,     9,    10,    14,    39,    11,    12,    13,
-    31,    49,    48,     9,    10,    14,    36,   -38,    52,    64,
-    54,    64,    11,    12,    13,    55,    56,    57,     9,    10,
-    14,    36,    37,    67,    15,    76,    39,    11,    12,    13,
-     2,    49,    48,     9,    10,    14,    11,    12,    13,    64,
-   nil,   nil,     9,    10,    14,    25,    11,    12,    13,    17,
-    19,    20,     9,    10,    14,    23,    11,    12,    13,    17,
+    16,    27,    28,    29,    26,    25,    11,    12,    13,    17,
+    19,    20,     9,    10,    14,    23,    55,    27,    28,    29,
+    26,    25,    11,    12,    13,    17,    19,    20,     9,    10,
+    14,    23,    40,    41,    66,    64,    38,    43,    11,    12,
+    13,    37,    53,    52,     9,    10,    14,    27,    28,    29,
+    26,    25,    11,    12,    13,    17,    19,    20,     9,    10,
+    14,    23,    40,    68,    69,    70,    81,    66,    11,    12,
+    13,    68,    40,    41,     9,    10,    14,    43,    11,    12,
+    13,    68,    53,    52,     9,    10,    14,    40,    30,    56,
+    31,    58,    34,    11,    12,    13,    59,    60,    61,     9,
+    10,    14,    40,    41,    71,   -38,    77,    43,    11,    12,
+    13,     2,    53,    52,     9,    10,    14,    11,    12,    13,
+    35,    68,    68,     9,    10,    14,    11,    12,    13,    17,
     19,    20,     9,    10,    14,    11,    12,    13,    17,    19,
-    20,     9,    10,    14,    34,   nil,   nil,   nil,   nil,    33 ]
+    20,     9,    10,    14,    15,    80 ]
 
 racc_action_check = [
-     2,    47,    47,    49,    53,     2,     2,     2,     2,     2,
-     2,     2,     2,     2,     2,     2,    36,    69,    58,    60,
-    61,    36,    36,    36,    36,    36,    36,    36,    36,    36,
-    36,    36,    77,    77,    62,     4,     5,    77,    77,    77,
-    77,    26,    77,    77,    77,    77,    77,    26,    26,    26,
-    15,    27,    27,    26,    26,    26,    27,    27,    27,    27,
-    21,    27,    27,    27,    27,    27,    37,    16,    37,    64,
-    39,    65,    37,    37,    37,    39,    39,    39,    37,    37,
-    37,    54,    54,    54,     1,    68,    54,    54,    54,    54,
-     0,    54,    54,    54,    54,    54,     0,     0,     0,    48,
-   nil,   nil,     0,     0,     0,    22,    22,    22,    22,    22,
-    22,    22,    22,    22,    22,    22,     8,     8,     8,     8,
-     8,     8,     8,     8,     8,    29,    29,    29,    29,    29,
-    29,    29,    29,    29,    25,   nil,   nil,   nil,   nil,    25 ]
+     2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+     2,     2,     2,     2,     2,     2,    40,    40,    40,    40,
+    40,    40,    40,    40,    40,    40,    40,    40,    40,    40,
+    40,    40,    81,    81,    51,    51,    25,    81,    81,    81,
+    81,    25,    81,    81,    81,    81,    81,    22,    22,    22,
+    22,    22,    22,    22,    22,    22,    22,    22,    22,    22,
+    22,    22,    30,    52,    53,    57,    73,    62,    30,    30,
+    30,    64,    31,    31,    30,    30,    30,    31,    31,    31,
+    31,    65,    31,    31,    31,    31,    31,    41,     4,    41,
+     5,    43,    15,    41,    41,    41,    43,    43,    43,    41,
+    41,    41,    58,    58,    58,    16,    66,    58,    58,    58,
+    58,     0,    58,    58,    58,    58,    58,     0,     0,     0,
+    21,    68,    69,     0,     0,     0,     8,     8,     8,     8,
+     8,     8,     8,     8,     8,    33,    33,    33,    33,    33,
+    33,    33,    33,    33,     1,    72 ]
 
 racc_action_pointer = [
-    88,    84,    -2,   nil,    30,    30,   nil,   nil,   108,   nil,
-   nil,   nil,   nil,   nil,   nil,    50,    61,   nil,   nil,   nil,
-   nil,    58,    98,   nil,   nil,   132,    39,    49,   nil,   117,
-   nil,   nil,   nil,   nil,   nil,   nil,    14,    64,   nil,    67,
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,   -14,    86,   -10,
-   nil,   nil,   nil,     0,    79,   nil,   nil,   nil,     3,   nil,
-     6,     7,    22,   nil,    56,    58,   nil,   nil,    81,    12,
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,    30,   nil ]
+   109,   144,    -2,   nil,    83,    84,   nil,   nil,   118,   nil,
+   nil,   nil,   nil,   nil,   nil,    92,    99,   nil,   nil,   nil,
+   nil,   118,    44,   nil,   nil,    34,   nil,   nil,   nil,   nil,
+    60,    70,   nil,   127,   nil,   nil,   nil,   nil,   nil,   nil,
+    14,    85,   nil,    88,   nil,   nil,   nil,   nil,   nil,   nil,
+   nil,    19,    50,    51,   nil,   nil,   nil,    61,   100,   nil,
+   nil,   nil,    52,   nil,    58,    68,    94,   nil,   108,   109,
+   nil,   nil,   141,    61,   nil,   nil,   nil,   nil,   nil,   nil,
+   nil,    30,   nil ]
 
 racc_action_default = [
-   -60,   -60,   -60,    -2,    -5,   -60,   -12,   -13,   -24,   -32,
-   -33,   -34,   -35,   -36,   -37,   -60,    -1,   -28,   -29,   -30,
-   -31,   -60,   -40,   -42,   -43,   -60,   -60,   -60,   -25,   -26,
-    79,   -39,   -41,   -44,   -45,    -6,   -60,   -60,    -7,   -60,
-   -14,   -15,   -16,   -17,   -18,   -19,   -20,   -46,   -50,   -60,
-   -27,   -38,    -3,   -60,   -60,   -21,   -22,   -23,   -47,   -48,
-   -60,   -60,   -58,   -51,   -56,   -52,    -4,    -8,   -60,   -10,
-   -49,   -54,   -55,   -59,   -57,   -53,    -9,   -60,   -11 ]
+   -64,   -64,   -64,    -2,    -5,   -64,   -12,   -13,   -24,   -32,
+   -33,   -34,   -35,   -36,   -37,   -64,    -1,   -28,   -29,   -30,
+   -31,   -64,   -40,   -42,   -43,   -64,   -46,   -47,   -48,   -49,
+   -64,   -64,   -25,   -26,    83,   -39,   -41,   -44,   -45,    -6,
+   -64,   -64,    -7,   -64,   -14,   -15,   -16,   -17,   -18,   -19,
+   -20,   -50,   -54,   -64,   -27,   -38,    -3,   -64,   -64,   -21,
+   -22,   -23,   -51,   -52,   -64,   -64,   -62,   -55,   -60,   -56,
+    -4,    -8,   -64,   -10,   -53,   -58,   -59,   -63,   -61,   -57,
+    -9,   -64,   -11 ]
 
 racc_goto_table = [
-    40,    41,    68,     3,    18,    28,    63,    38,    32,    29,
-    18,    58,     1,   nil,   nil,   nil,   nil,   nil,    71,    72,
-   nil,    59,    74,    75,    18,    78,    50,    40,    41,    35,
-    29,    18,    70,   nil,   nil,   nil,   nil,   nil,    18,   nil,
-    53,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-    40,    41 ]
+    44,    45,     3,    18,    32,    33,    63,    42,    72,    18,
+    36,    62,     1,   nil,   nil,   nil,   nil,    74,   nil,   nil,
+   nil,   nil,   nil,    18,   nil,   nil,   nil,    44,    45,    54,
+    33,    82,    39,   nil,    18,   nil,    67,   nil,   nil,   nil,
+   nil,    18,   nil,    57,   nil,   nil,   nil,   nil,    75,    76,
+    44,    45,    78,    79 ]
 
 racc_goto_check = [
-     9,    10,     8,     2,    14,    15,    22,     6,    17,    16,
-    14,    20,     1,   nil,   nil,   nil,   nil,   nil,    22,    22,
-   nil,    21,    22,    22,    14,     8,    15,     9,    10,     2,
-    16,    14,    21,   nil,   nil,   nil,   nil,   nil,    14,   nil,
-     2,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-     9,    10 ]
+     9,    10,     2,    14,    15,    16,    21,     6,     8,    14,
+    17,    20,     1,   nil,   nil,   nil,   nil,    21,   nil,   nil,
+   nil,   nil,   nil,    14,   nil,   nil,   nil,     9,    10,    15,
+    16,     8,     2,   nil,    14,   nil,    22,   nil,   nil,   nil,
+   nil,    14,   nil,     2,   nil,   nil,   nil,   nil,    22,    22,
+     9,    10,    22,    22 ]
 
 racc_goto_pointer = [
-   nil,    12,     3,   nil,   nil,   nil,   -20,   nil,   -52,   -27,
-   -26,   nil,   nil,   nil,     2,    -3,     1,   -14,   nil,   nil,
-   -36,   -26,   -42,   nil ]
+   nil,    12,     2,   nil,   nil,   nil,   -24,   nil,   -50,   -31,
+   -30,   nil,   nil,   nil,     1,    -4,    -3,   -12,   nil,   nil,
+   -40,   -45,   -16,   nil ]
 
 racc_goto_default = [
-   nil,   nil,   nil,    43,     4,     5,    69,    44,   nil,     6,
-     7,    42,    45,    46,     8,   nil,    24,    21,    22,    47,
-   nil,   nil,   nil,    61 ]
+   nil,   nil,   nil,    47,     4,     5,    73,    48,   nil,     6,
+     7,    46,    49,    50,     8,   nil,    24,    21,    22,    51,
+   nil,   nil,   nil,    65 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
@@ -194,24 +198,28 @@ racc_reduce_table = [
   1, 36, :_reduce_none,
   2, 36, :_reduce_44,
   2, 36, :_reduce_45,
-  1, 29, :_reduce_46,
-  2, 29, :_reduce_47,
-  2, 29, :_reduce_48,
-  3, 29, :_reduce_49,
-  1, 37, :_reduce_50,
-  2, 37, :_reduce_51,
-  2, 37, :_reduce_52,
-  3, 37, :_reduce_53,
-  2, 38, :_reduce_54,
-  2, 39, :_reduce_55,
+  1, 36, :_reduce_none,
+  1, 36, :_reduce_none,
+  1, 36, :_reduce_none,
+  1, 36, :_reduce_none,
+  1, 29, :_reduce_50,
+  2, 29, :_reduce_51,
+  2, 29, :_reduce_52,
+  3, 29, :_reduce_53,
+  1, 37, :_reduce_54,
+  2, 37, :_reduce_55,
+  2, 37, :_reduce_56,
+  3, 37, :_reduce_57,
+  2, 38, :_reduce_58,
+  2, 39, :_reduce_59,
   1, 40, :_reduce_none,
-  2, 40, :_reduce_57,
-  1, 41, :_reduce_58,
-  2, 41, :_reduce_59 ]
+  2, 40, :_reduce_61,
+  1, 41, :_reduce_62,
+  2, 41, :_reduce_63 ]
 
-racc_reduce_n = 60
+racc_reduce_n = 64
 
-racc_shift_n = 79
+racc_shift_n = 83
 
 racc_token_table = {
   false => 0,
@@ -488,94 +496,102 @@ module_eval(<<'.,.,', 'parser.y', 48)
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 50)
-  def _reduce_46(val, _values, result)
-     result = val[0].to_i 
-    result
-  end
-.,.,
+# reduce 46 omitted
 
-module_eval(<<'.,.,', 'parser.y', 51)
-  def _reduce_47(val, _values, result)
-     result = "#{val[0]}#{val[1]}".to_f 
-    result
-  end
-.,.,
+# reduce 47 omitted
 
-module_eval(<<'.,.,', 'parser.y', 52)
-  def _reduce_48(val, _values, result)
-     result = "#{val[0]}#{val[1]}".to_f 
-    result
-  end
-.,.,
+# reduce 48 omitted
 
-module_eval(<<'.,.,', 'parser.y', 53)
-  def _reduce_49(val, _values, result)
-     result = "#{val[0]}#{val[1]}#{val[2]}".to_f 
-    result
-  end
-.,.,
+# reduce 49 omitted
 
-module_eval(<<'.,.,', 'parser.y', 55)
+module_eval(<<'.,.,', 'parser.y', 54)
   def _reduce_50(val, _values, result)
      result = val[0].to_i 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 56)
+module_eval(<<'.,.,', 'parser.y', 55)
   def _reduce_51(val, _values, result)
-     result = "#{val[0]}#{val[1]}".to_i 
+     result = "#{val[0]}#{val[1]}".to_f 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y', 56)
+  def _reduce_52(val, _values, result)
+     result = "#{val[0]}#{val[1]}".to_f 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'parser.y', 57)
-  def _reduce_52(val, _values, result)
-     result = "-#{val[1]}".to_i 
+  def _reduce_53(val, _values, result)
+     result = "#{val[0]}#{val[1]}#{val[2]}".to_f 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 58)
-  def _reduce_53(val, _values, result)
-     result = "-#{val[1]}#{val[2]}".to_i 
+module_eval(<<'.,.,', 'parser.y', 59)
+  def _reduce_54(val, _values, result)
+     result = val[0].to_i 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'parser.y', 60)
-  def _reduce_54(val, _values, result)
-     result = "#{val[0]}#{val[1]}" 
+  def _reduce_55(val, _values, result)
+     result = "#{val[0]}#{val[1]}".to_i 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y', 61)
+  def _reduce_56(val, _values, result)
+     result = "-#{val[1]}".to_i 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'parser.y', 62)
-  def _reduce_55(val, _values, result)
-     result = "#{val[0]}#{val[1]}" 
-    result
-  end
-.,.,
-
-# reduce 56 omitted
-
-module_eval(<<'.,.,', 'parser.y', 65)
   def _reduce_57(val, _values, result)
+     result = "-#{val[1]}#{val[2]}".to_i 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y', 64)
+  def _reduce_58(val, _values, result)
      result = "#{val[0]}#{val[1]}" 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 67)
-  def _reduce_58(val, _values, result)
+module_eval(<<'.,.,', 'parser.y', 66)
+  def _reduce_59(val, _values, result)
+     result = "#{val[0]}#{val[1]}" 
+    result
+  end
+.,.,
+
+# reduce 60 omitted
+
+module_eval(<<'.,.,', 'parser.y', 69)
+  def _reduce_61(val, _values, result)
+     result = "#{val[0]}#{val[1]}" 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y', 71)
+  def _reduce_62(val, _values, result)
      result = 'e' 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 68)
-  def _reduce_59(val, _values, result)
+module_eval(<<'.,.,', 'parser.y', 72)
+  def _reduce_63(val, _values, result)
      result = "e-" 
     result
   end
